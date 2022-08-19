@@ -15,6 +15,11 @@
   color: tomato;
 }
 
+.logo-img {
+  width: 150px;
+  margin-left: 2rem;
+}
+
 /* Navbar */
 .nav-div {
   width: 100%;
@@ -23,7 +28,7 @@
 .ul-div ul {
   display: flex;
   gap: 1rem;
-  margin-left: 5rem;
+  margin-left: 3rem;
 }
 
 .ul-div a:hover {
