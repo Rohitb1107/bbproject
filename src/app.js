@@ -3,13 +3,17 @@ const app = express();
 const path = require("path");
 const PORT = process.env.PORT || 5000;
 const hbs = require("hbs");
-require("./db/connect");
+const dotenv = require("dotenv");
+// require("./db/connect");
 const bcrypt = require("bcryptjs");
+const mongoose = require("mongoose");
 
 const Register = require("../models/register.model");
 
 const static_path = path.join(__dirname, "../public");
 const partialsPath = path.join(__dirname, "../partials");
+
+dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -76,6 +80,27 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server start running on port ${PORT}.`);
+// Get details for Admin
+
+app.get("/admin", (req, res) => {
+  Register.find({}, (err, users) => {
+    if (err) {
+      console.log("Data not fetched!");
+    }
+    // console.log("UsersData:", users);
+    res.render("admin", {
+      usersData: users,
+    });
+  });
 });
+
+mongoose
+  .connect(process.env.CONNECTION_URL, { useNewUrlParser: true })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server starts running on port ${PORT}.`);
+    });
+  })
+  .catch((err) => {
+    console.log("error:", err);
+  });
